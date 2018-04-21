@@ -1,0 +1,18 @@
+
+# Doku
+client_id.json -> Google Projekt anlegen
+# OAuth 2.0-Client-IDs - anlegen bei https://console.developers.google.com/apis/credentials?project=hip-weaver-184521&pli=1
+# see also https://developers.google.com/api-client-library/python/auth/installed-app
+# download 
+
+apt install git
+apt install python3-pip
+apt install python3-setuptools
+
+# Docs:
+# https://github.com/googledrive/PyDrive
+pip3 install git+https://github.com/googledrive/PyDrive.git#egg=PyDrive
+
+sudo pip3 install --upgrade google-api-python-client
+
+python3 ./drive_list.py  --noauth_local_webserver

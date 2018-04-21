@@ -1,0 +1,11 @@
+/testing/*
+/client_id.json
+/drive_list_storage.json
+/output.txt
+/backup/*
+/*~
+/.kdev4/*
+/.credentials*
+/pydrive.kdev4
+/examples
+/drive_list.ini
