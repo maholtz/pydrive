@@ -32,12 +32,47 @@ def getMimeTypeAndFileEnding(file):
         return ('image/jpeg', 'jpg', True)
     if 'image/png' == file['mimeType']:
         return ('image/png', 'png', True)
+    if 'image/gif' == file['mimeType']:
+        return ('image/gif', 'gif', True)
     if 'image/svg+xml' == file['mimeType']:
         return ('image/svg+xml', 'svg', True)
     if 'application/pdf' == file['mimeType']:
         return ('application/pdf', 'pdf', True)
     if 'video/mp4' == file['mimeType']:
         return ('video/mp4', 'mp4', True)
+    if 'video/3gpp' == file['mimeType']:
+        return ('video/3gpp', '3gp', True)
+    if 'application/java-archive' == file['mimeType']:
+        return ('application/java-archive', 'jar', True)
+    if 'text/plain' == file['mimeType']:
+        return ('text/plain', 'txt', False)
+    if 'application/zip' == file['mimeType']:
+        return ('application/zip', 'zip', True)
+    if 'application/x-php' == file['mimeType']:
+        return ('application/x-php', 'php', False)
+    if 'application/javascript' == file['mimeType']:
+        return ('application/javascript', 'js', False)
+    if 'application/msword' == file['mimeType']:
+        return ('application/msword', 'doc', False)
+    if 'application/vnd.google-earth.kmz' == file['mimeType']:
+        return ('application/vnd.google-earth.kmz', 'kmz', True)
+    if 'application/vnd.google-apps.map' == file['mimeType']:
+        return ('application/vnd.google-apps.map', '', True)
+    if 'application/octet-stream' == file['mimeType']:
+        return ('application/octet-stream', '', True)
+    if 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' == file['mimeType']:
+        return ('application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'docx', True)
+    if 'application/vnd.google-apps.form' == file['mimeType']:
+        return ('application/vnd.google-apps.form', '', True)
+    if 'application/vnd.oasis.opendocument.text-template' == file['mimeType']:
+        return ('application/vnd.oasis.opendocument.text-template', 'ott', True)
+    if 'video/mkv' == file['mimeType']:
+        return ('video/mkv', 'm4v', True)
+    if 'text/x-c++src' == file['mimeType']:
+        return ('text/x-c++src', 'cpp', False)    
+    if 'application/vnd.google-apps.drawing' == file['mimeType']:
+        return ('application/vnd.google-apps.drawing', '', True)
+    
     
     # if 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' == file['mimeType']:
     #    return ('application/vnd.oasis.opendocument.text', 'odt', False)
@@ -113,8 +148,10 @@ def downloadFile(fileArray, outputPath):
         else:
              # file does not exist, download file
              downloadAndWriteFile(download_url, outfile)
-    except:
+    except Exception as error:
         print(fileArray['name'], '(',outfile, ') Something went wrong. The file has not been downloaded.')
+        print(error)
+        print('modifiedTime: ' + fileArray['modifiedTime'])
     
 
 
@@ -139,7 +176,7 @@ def downloadFolder(folder, path):
 # @TODO: maximum 1000 files per folder
 def donwloadFiles(backup_path, parent):
     # @TODO: it could happen, that there are more than 1000 files per folder
-    files = DRIVE.files().list(q="mimeType != 'application/vnd.google-apps.folder' and parents = '"+parent+"' ", corpora='user', spaces='drive', pageSize='1000').execute().get('files', [])
+    files = DRIVE.files().list(q="mimeType != 'application/vnd.google-apps.folder' and parents = '"+parent+"' ", corpora='user', spaces='drive', pageSize='1000', fields="nextPageToken, files(id, name, mimeType, kind, trashed, parents, spaces, version, modifiedTime)").execute().get('files', [])
     for f in files:
         if (DEBUG_LEVEL > 0):
             print('Daten: ',f)
